@@ -1,2 +1,5 @@
 report.xml
 .idea
+tests/__pycache__/
+stuff/.DS_Store
+stuff/__pycache__/
