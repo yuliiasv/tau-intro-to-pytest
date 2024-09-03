@@ -5,3 +5,7 @@ from stuff.accum import Accumulator
 def accum(scope="function"):
     yield Accumulator()
     print("cleanup step")
+
+# @pytest.fixture(scope="function") #the browser will open and close in each test
+# def driver():
+#     driver = webdriver
