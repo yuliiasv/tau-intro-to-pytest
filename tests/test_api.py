@@ -1,8 +1,9 @@
 import pytest
 import requests
-
 from playwright.sync_api import sync_playwright
-@pytest.mark.duckduckgo
+from config import LOGIN_URL
+
+
 @pytest.mark.api
 def test_duckduckgo_instant_answer_api():
     # Arrange
@@ -16,36 +17,28 @@ def test_duckduckgo_instant_answer_api():
 
 
 # Get the Bearer token from the login endpoint
-response = requests.post('https://onlinestorepredprod.onrender.com/auth/login', json={
+res = requests.post(LOGIN_URL, json={
     "email": "online.store.authority@gmail.com",
     "password": "b9uT2rXE80Ls"
 })
 
 # Extract the Bearer token from the response
-bearer_token = response.json().get('token')
+bearer_token = res.json().get('token')
 
-if bearer_token:
-    def test_post(playwright: sync_playwright):
-        data = {
-            "email": "online.store.authority@gmail.com",
-            "password": "b9uT2rXE80Ls"
-        }
 
-        # Create a new context
-        context = playwright.request.new_context()
+@pytest.mark.api
+def test_post(playwright: sync_playwright):
+    data = {
+        "email": "online.store.authority@gmail.com",
+        "password": "b9uT2rXE80Ls"
+    }
 
-        # Use the Bearer token in the Authorization header
-        response = context.post(
-            url="https://onlinestorepredprod.onrender.com/auth/login",
-            headers={"Authorization": f"Bearer {bearer_token}"},
-            data=data
-        )
+    # Create a new
+    context = playwright.request.new_context()
 
-        print(response)
+    # Use the Bearer token in the Authorization header
+    resp = context.post(url=LOGIN_URL, headers={"Authorization": f"Bearer {bearer_token}"}, data=data)
 
-        # Assertions to ensure the request was successful
-        assert response.status == 200
-        assert response.status_text == "OK"
-else:
-    print("Failed to retrieve the Bearer token")
-
+    # Assertions to ensure the request was successful
+    assert resp.status == 200
+    assert resp.status_text == "OK"

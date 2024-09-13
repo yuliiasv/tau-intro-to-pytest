@@ -3,3 +3,8 @@ report.xml
 tests/__pycache__/
 stuff/.DS_Store
 stuff/__pycache__/
+node_modules/
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
